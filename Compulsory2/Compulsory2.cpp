@@ -11,14 +11,17 @@ struct Point {
 	double x, y;
 };
 // Function to compute linear least squares
-void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1) 
 {
 	int n = points.size();
 	double Sx = 0, Sy = 0, Sxx = 0, Sxy = 0;
-	//for (const auto& p : points)
-	//{
-	//	// Compute all necessary sum
-	//}
+	for (const auto& p : points) //why const?
+	{
+		// Compute all necessary sum
+		Sx = points.at(0).x;
+		Sy = points.at(0).y;
+		Sxx = points.at(0).x * points.at(0).x;
+		Sxy = points.at(0).x * points.at(0).y;
+	}
 
 	if (filein.is_open())
 	{
@@ -32,11 +35,56 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1
 			points.push_back(tempPoint);
 		}
 	}
+	Beta1 = ((n * Sxy) - (Sx * Sy)) / ((n * Sxx) - (Sx * Sx));
+	Beta0 = (Sy - (Beta1 * Sx)) / n;
 
-	
 }
-	//Beta0 = // complete the code
-	//	Beta1 = // complete the code
+
+void ReadFromFile(const std::string& filename)
+{
+	std::vector<Point> points;
+	std::ifstream file(filename);
+
+	double tempDouble, tempX, tempY;
+
+	if (!file.is_open())
+	{
+		std::cerr << "Failed to open file: " << filename << std::endl;
+		return;
+	}
+
+	std::string line;
+	while (std::getline(file, line)) 
+	{
+		Point tempPoint;
+		std::vector<std::string> row;
+		std::stringstream ss;
+		std::string cell;
+
+		std::cout << "current cell is: " << cell << std::endl;
+
+		while (std::getline(ss, cell, ',')) {
+			//tempDouble = stod(cell); // how to push this into a point
+			//row.push_back(cell);
+			std::cout << "curent cell is: " << cell << std::endl;
+		}
+
+		//std::cout << row.at(0);
+
+		/*tempX = stod(row.at(0));
+		tempY = stod(row.at(1));
+
+		tempPoint = { tempX, tempY };
+		points.push_back(tempPoint);*/
+	}
+
+	file.close();
+	/*for (int i = 0; i < sizeof(points); i++)
+	{
+		std::cout << points.at(i).x << ", " << points.at(i).y << std::endl;
+	}*/
+}
+
 int main()
 {
 	ReadFromFile("game_tech_least_squares_mixed.csv");
