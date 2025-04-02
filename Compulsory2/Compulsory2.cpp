@@ -1,7 +1,8 @@
-
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
+#include <string>
 
 std::ifstream filein("dataPoints.txt");
 //C:\\Users\\edvar\\Documents\\HINN\\Matematikk III\\Compulsory2\\dataPoints.txt
@@ -24,7 +25,7 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1
 		for (int i = 0; /*i < sizeof(points)*/ i < 60; i++)
 		{
 			std::string tempString;
-			filein.getline(filein, tempString);
+			//filein.getline(filein, tempString);
 			double tempX, tempY;
 			Point tempPoint = { 0, 0 };
 			//points[i].x;
@@ -38,10 +39,13 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1
 	//	Beta1 = // complete the code
 int main()
 {
-	std::vector<Point> points = { {1, 2}, {2, 2.8}, {3, 3.6}, {4, 4.5}, {5, 5.1} };
+	ReadFromFile("game_tech_least_squares_mixed.csv");
+
+	
+	/*std::vector<Point> points = { {1, 2}, {2, 2.8}, {3, 3.6}, {4, 4.5}, {5, 5.1} };
 	double a, b;
 	linearLeastSquares(points, a, b);
-	std::cout << "Best fit line: y = " << a << "x + " << b << std::endl;
+	std::cout << "Best fit line: y = " << a << "x + " << b << std::endl;*/
 	return 0;
-	
+
 }
