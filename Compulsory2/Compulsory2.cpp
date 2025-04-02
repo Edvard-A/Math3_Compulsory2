@@ -11,6 +11,7 @@ struct Point {
 	double x, y;
 };
 // Function to compute linear least squares
+void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1)
 {
 	int n = points.size();
 	double Sx = 0, Sy = 0, Sxx = 0, Sxy = 0;
