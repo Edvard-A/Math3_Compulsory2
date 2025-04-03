@@ -102,5 +102,8 @@ int main()
 	ReadFromFile("game_tech_least_squares_mixed.csv");
 
 	return 0;
-
+	/*std::vector<Point> points = { {1, 2}, {2, 2.8}, {3, 3.6}, {4, 4.5}, {5, 5.1} };
+	double a, b;
+	linearLeastSquares(points, a, b);
+	std::cout << "Best fit line: y = " << a << "x + " << b << std::endl;*/
 }
