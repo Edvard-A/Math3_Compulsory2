@@ -29,7 +29,7 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1
 
 }
 
-/*std::vector<std::string>*/ void ReadFromFile(const std::string& filename)
+void ReadFromFile(const std::string& filename)
 {
 	std::vector<std::vector<std::string>> sPoints;
 	std::vector<Point> points;
