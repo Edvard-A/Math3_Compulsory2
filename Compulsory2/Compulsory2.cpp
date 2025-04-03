@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <C:\Library\eigen-3.4.0\Eigen\Dense>
+#include <C:\Libraries\eigen-3.4.0\Eigen\Dense>
 
 std::ifstream filein("dataPoints.txt");
 //C:\\Users\\edvar\\Documents\\HINN\\Matematikk III\\Compulsory2\\dataPoints.txt
@@ -34,8 +34,6 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta1, double& Beta0
 
 	Beta1 = ((n * Sxy) - (Sx * Sy)) / ((n * Sxx) - (Sx * Sx));
 	Beta0 = (Sy - (Beta1 * Sx)) / n;
-	std::cout << "beta1: " << Beta1 << std::endl;
-	std::cout << "beta0: " << Beta0 << std::endl;
 }
 
 void quadraticLeastSquares(const std::vector<Point>& points, double& a, double& b, double& c) {
@@ -61,6 +59,29 @@ void quadraticLeastSquares(const std::vector<Point>& points, double& a, double& 
 	a = X(0);
 	b = X(1);
 	c = X(2);
+}
+
+double sum(const std::vector<std::string>& F, const std::vector<Point>& points) {
+	double result = 0.0;
+
+	for (const auto& point : points) {
+		double temp = 1.0;
+
+		for (const auto& var : F) {
+			if (var == "x") {
+				temp = point.x;
+			}
+			else if (var == "y") {
+				temp = point.y;
+			}
+			else {
+				throw std::invalid_argument("whoops " + var);
+			}
+		}
+
+		result += temp;
+	}
+	return result;
 }
 
 //void chooseLinearOrQuad(const std::vector<Point>& p, double& a, double& b, double& c) {
@@ -141,6 +162,12 @@ void ReadFromFile(const std::string& filename)
 		points.push_back(tempPoint);
 	}
 
+	std::cout << "points output: " << std::endl;
+	for (int i = 0; i < points.size(); i++)
+	{
+		std::cout << points[i].x << ", " << points[i].y << std::endl;
+	}
+
 	
 	
 	/*for (int i = 0; i < points.size(); i++) 
@@ -174,6 +201,7 @@ void ReadFromFile(const std::string& filename)
 		
 	}*/
 	
+	std::cout << "\ndifferences: \n";
 	while (counter < points.size())
 	{
 		y0 = points[counter].y;
@@ -189,8 +217,10 @@ void ReadFromFile(const std::string& filename)
 		
 		counter++;
 	}
-	std::cout << "breakpoint is: " << breakpoint << std::endl;
+
+	std::cout << "\nbreakpoint is: " << breakpoint << std::endl;
 	std::vector<Point> pointsS2;
+
 	while (breakpoint < points.size()) {
 		//pointsS2[i].push_back(points[i])
 		tempX = points[breakpoint].x;
@@ -207,66 +237,26 @@ void ReadFromFile(const std::string& filename)
 	if (sqrt(a * a) < linearOrQuadThreshold) {
 		a = 0;
 		linearLeastSquares(points, a, b);
-		std::cout << "Best fit line for P1: y = " << a << "x + " << b << std::endl;
+		std::cout << "\nBest fit line for P1: y = " << a << "x + " << b << std::endl;
 	}
 	else {
-		std::cout << "Best fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
+		std::cout << "\nBest fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
 	}
 
 	quadraticLeastSquares(pointsS2, a, b, c);
 	if (sqrt(a * a) < linearOrQuadThreshold) {
 		a = 0;
 		linearLeastSquares(pointsS2, a, b);
-		std::cout << "Best fit line for P1: y = " << a << "x + " << b << std::endl;
+		std::cout << "\nBest fit line for P2: y = " << a << "x + " << b << std::endl;
 	}
 	else {
-		std::cout << "Best fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
-	}
-
-	
-
-
-	// OUTPUT OF BOTH VECTORS 
-	
-	/*std::cout << "point vector 1: " << std:: endl;
-	for (int i = 0; i < points.size(); i++)
-	{
-		std::cout << points[i].x << ", " << points[i].y << std::endl;
-	}
-	std::cout << "point vector 2: " << std::endl;
-	for (int i = 0; i < pointsS2.size(); i++)
-	{
-		std::cout << pointsS2[i].x << ", " << pointsS2[i].y << std::endl;
-	}*/
-
-	
-
-	/*while (100 < errMargin)
-	{
-		quadraticLeastSquares(points, a, b, c);
-		std::cout << "Best fit curve: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
-	}*/
-
-	
-	
-	//linearLeastSquares(points, a, b);
-	//std::cout << points.at(0).x << ", " << points.at(0).y << ", " << points.size();
-	//std::cout << a;
-	
-	//std::cout << "Best fit line: y = " << a << "x + " << b << std::endl;
+		std::cout << "\nBest fit curve for P2: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
+	}	
 }
 
 int main()
 {
 	ReadFromFile("game_tech_least_squares_mixed.csv");
-
-	
-	//std::vector<Point> vPoints = { {1, 2}, {2, 2.8}, {3, 3.6}, {4, 4.5}, {5, 5.1} };
-	//double a, b;
-	//linearLeastSquares(vPoints, a, b);
-	////std::cout << points.at(0).x << ", " << points.at(0).y << ", " << points.size();
-	////std::cout << a;
-	//std::cout << "Best fit line: y = " << a << "x + " << b << std::endl;
 
 	return 0;
 }
