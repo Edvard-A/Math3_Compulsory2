@@ -31,15 +31,16 @@ void linearLeastSquares(std::vector<Point>& points, double& Beta0, double& Beta1
 
 void ReadFromFile(const std::string& filename)
 {
-	std::vector<std::vector<std::string>> sPoints;
-	std::vector<Point> points;
-	std::vector<std::string> testVector;
-	std::ifstream file(filename);
-	std::string testString;
+	std::vector<std::vector<std::string>> sPoints;  //vector of vectors of points as strings
+	std::vector<Point> points;						// vector of points
+	std::vector<std::string> tempVector;			// temporary vector to store single strings of points
+	std::string tempString;
 	std::string::size_type SZ;
-
+	
 	double tempX, tempY;
 	Point tempPoint;
+
+	std::ifstream file(filename);
 
 	if (!file.is_open())
 	{
@@ -70,8 +71,8 @@ void ReadFromFile(const std::string& filename)
 		{
 			if (j < 1) // when we get to the X point
 			{
-				testString = sPoints[i][j] + " " + sPoints[i][j + 1]; // adds both points as one string
-				testVector.push_back(testString);
+				tempString = sPoints[i][j] + " " + sPoints[i][j + 1]; // adds both points as one string
+				tempVector.push_back(tempString);
 			}
 			
 			
@@ -82,10 +83,10 @@ void ReadFromFile(const std::string& filename)
 	/// <summary> 
 	///		loop that converts each element of the stringvector to doubles, storing them as temorary X and Y values, then creating a point with those coordinates and pushing it into the points vector
 	/// </summary>
-	for (int i = 1; i < (((sizeof(testVector) - 1) * 2) - 1); i++) 
+	for (int i = 1; i < (((sizeof(tempVector) - 1) * 2) - 1); i++)
 	{
-		tempX = std::stod(testVector[i], &SZ);
-		tempY = std::stod(testVector[i].substr(SZ));
+		tempX = std::stod(tempVector[i], &SZ);
+		tempY = std::stod(tempVector[i].substr(SZ));
 		tempPoint = { tempX, tempY };
 		points.push_back(tempPoint);
 	}
