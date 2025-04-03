@@ -63,6 +63,18 @@ void quadraticLeastSquares(const std::vector<Point>& points, double& a, double& 
 	c = X(2);
 }
 
+//void chooseLinearOrQuad(const std::vector<Point>& p, double& a, double& b, double& c) {
+//	double linearOrQuadThreshold = 0.005;
+//	quadraticLeastSquares(p, a, b, c);
+//	if (sqrt(a * a) < linearOrQuadThreshold) {
+//		a = 0;
+//		linearLeastSquares(p, a, b);
+//		std::cout << "Best fit line for P1: y = " << a << "x + " << b << std::endl;
+//	}
+//	else {
+//		std::cout << "Best fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
+//	}
+//}
 
 // this function should definitely be split up into multiple processes
 void ReadFromFile(const std::string& filename)
@@ -139,7 +151,10 @@ void ReadFromFile(const std::string& filename)
 
 	int maxY; // = findLargestYPoint(points)
 	//double yThreshold = (maxY / 100) * 20; // 20% of max y value
-	int errMargin = 30;
+
+	/// ERROR CALCULATION AND SEGMENTING
+
+	const int errMargin = 30;
 
 	double a, b, c;
 	double y0, y1, deltaY;
@@ -181,11 +196,39 @@ void ReadFromFile(const std::string& filename)
 		tempX = points[breakpoint].x;
 		tempY = points[breakpoint].y;
 		tempPoint = { tempX, tempY };
+
 		pointsS2.push_back(tempPoint);
 
 		points.erase(points.begin() + breakpoint); // erases the current element from the vector
 	}
-	std::cout << "point vector 1: " << std:: endl;
+
+	double linearOrQuadThreshold = 0.005;
+	quadraticLeastSquares(points, a, b, c);
+	if (sqrt(a * a) < linearOrQuadThreshold) {
+		a = 0;
+		linearLeastSquares(points, a, b);
+		std::cout << "Best fit line for P1: y = " << a << "x + " << b << std::endl;
+	}
+	else {
+		std::cout << "Best fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
+	}
+
+	quadraticLeastSquares(pointsS2, a, b, c);
+	if (sqrt(a * a) < linearOrQuadThreshold) {
+		a = 0;
+		linearLeastSquares(pointsS2, a, b);
+		std::cout << "Best fit line for P1: y = " << a << "x + " << b << std::endl;
+	}
+	else {
+		std::cout << "Best fit curve for P1: y = " << a << "x^2 + " << b << "x + " << c << std::endl;
+	}
+
+	
+
+
+	// OUTPUT OF BOTH VECTORS 
+	
+	/*std::cout << "point vector 1: " << std:: endl;
 	for (int i = 0; i < points.size(); i++)
 	{
 		std::cout << points[i].x << ", " << points[i].y << std::endl;
@@ -194,7 +237,7 @@ void ReadFromFile(const std::string& filename)
 	for (int i = 0; i < pointsS2.size(); i++)
 	{
 		std::cout << pointsS2[i].x << ", " << pointsS2[i].y << std::endl;
-	}
+	}*/
 
 	
 
