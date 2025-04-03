@@ -38,7 +38,7 @@ void ReadFromFile(const std::string& filename)
 	std::string testString;
 	std::string::size_type SZ;
 
-	double tempDouble, tempX, tempY;
+	double tempX, tempY;
 	Point tempPoint;
 
 	if (!file.is_open())
